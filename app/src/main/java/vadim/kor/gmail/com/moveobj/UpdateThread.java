@@ -1,4 +1,5 @@
 package vadim.kor.gmail.com.moveobj;
+import android.annotation.SuppressLint;
 import android.graphics.Canvas;
 import android.view.SurfaceHolder;
 

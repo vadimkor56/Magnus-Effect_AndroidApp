@@ -46,13 +46,12 @@ public class MovementView extends SurfaceView implements SurfaceHolder.Callback 
         circlePaint = new Paint();
         circlePaint.setColor(Color.BLUE);
 
-        xVel = 2;
-        yVel = 2;
+        xVel = 4;
+        yVel = 4;
     }
     @Override
     protected void onDraw(Canvas canvas) {
         canvas.drawColor(Color.WHITE);
-        //canvas.drawCircle(xPos, yPos, circleRadius, circlePaint);
         @SuppressLint("DrawAllocation")
         Matrix mxTransform = new Matrix();
         mxTransform.preTranslate(xPos, yPos);
@@ -63,20 +62,22 @@ public class MovementView extends SurfaceView implements SurfaceHolder.Callback 
     public void updatePhysics() {
         xPos += xVel;
         yPos += yVel;
-        currentAngle += 2;
-        if (yPos - circleRadius < 0 || yPos + circleRadius > height) {
-            if (yPos - circleRadius < 0) {
-                yPos = circleRadius;
-            }else{
-                yPos = height - circleRadius;
+        currentAngle += 5;
+
+        if (yPos < 0 || yPos + ballHeight > height) {
+            if (yPos < 0) {
+                yPos = 0;
+            } else {
+                yPos = height - ballHeight;
             }
             yVel *= -1;
         }
-        if (xPos - circleRadius < 0 || xPos + circleRadius > width) {
-            if (xPos - circleRadius < 0) {
-                xPos = circleRadius;
+
+        if (xPos < 0 || xPos + ballWidth > width) {
+            if (xPos < 0) {
+                xPos = 0;
             } else {
-                xPos = width - circleRadius;
+                xPos = width - ballWidth;
             }
             xVel *= -1;
         }
@@ -88,8 +89,8 @@ public class MovementView extends SurfaceView implements SurfaceHolder.Callback 
         width = surfaceFrame.width();
         height = surfaceFrame.height();
 
-        xPos = width / 2;
-        yPos = circleRadius;
+        xPos = 0;
+        yPos = 0;
 
         updateThread = new UpdateThread(this);
         updateThread.setRunning(true);
