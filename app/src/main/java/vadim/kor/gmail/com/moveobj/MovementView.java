@@ -10,6 +10,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.SeekBar;
 
 public class MovementView extends SurfaceView implements SurfaceHolder.Callback {
     private int xPos;
@@ -29,6 +30,7 @@ public class MovementView extends SurfaceView implements SurfaceHolder.Callback 
     private int ballHeight;
     private int currentAngle;
 
+
     UpdateThread updateThread;
 
 
@@ -46,8 +48,10 @@ public class MovementView extends SurfaceView implements SurfaceHolder.Callback 
         circlePaint = new Paint();
         circlePaint.setColor(Color.BLUE);
 
-        xVel = 4;
-        yVel = 4;
+
+
+        xVel = MainActivity.vSpeed;
+        yVel = MainActivity.vSpeed;
     }
     @Override
     protected void onDraw(Canvas canvas) {

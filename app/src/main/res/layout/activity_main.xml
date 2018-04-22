@@ -4,11 +4,141 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="vadim.kor.gmail.com.moveobj.MainActivity">
+    tools:context="vadim.kor.gmail.com.moveobj.SecondActivity">
 
-    <ImageView
-        android:id="@+id/ball"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        app:srcCompat="@drawable/ball" />
+    <TextView
+        android:id="@+id/text1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="21dp"
+        android:layout_marginTop="6dp"
+        android:text="Выберите настройки полета "
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/textDensity"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <SeekBar
+        android:id="@+id/densityBar"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="11dp"
+        android:layout_marginLeft="16dp"
+        android:max="1000"
+        android:progress="500"
+        app:layout_constraintBottom_toTopOf="@+id/textWeight"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textDensity" />
+
+    <TextView
+        android:id="@+id/textDensity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:text="Плотность среды (кг/м^3) - 500"
+        app:layout_constraintBottom_toTopOf="@+id/densityBar"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text1" />
+
+    <TextView
+        android:id="@+id/textWeight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:text="Масса мяча (г) - 2000"
+        app:layout_constraintBottom_toTopOf="@+id/weightBar"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/densityBar" />
+
+    <SeekBar
+        android:id="@+id/weightBar"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="16dp"
+        android:max="4000"
+        android:progress="2000"
+        app:layout_constraintBottom_toTopOf="@+id/textVSpeed"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textWeight" />
+
+    <TextView
+        android:id="@+id/textVSpeed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:text="Начальная скорость (м/с) - 25"
+        app:layout_constraintBottom_toTopOf="@+id/vSpeedBar"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/weightBar" />
+
+    <SeekBar
+        android:id="@+id/vSpeedBar"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="11dp"
+        android:layout_marginLeft="16dp"
+        android:max="50"
+        android:progress="25"
+        app:layout_constraintBottom_toTopOf="@+id/textWSpeed"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textVSpeed" />
+
+    <TextView
+        android:id="@+id/textWSpeed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:text="Угловая скорость (рад/с) - 25"
+        app:layout_constraintBottom_toTopOf="@+id/wSpeedBar"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/vSpeedBar" />
+
+    <SeekBar
+        android:id="@+id/wSpeedBar"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="14dp"
+        android:layout_marginLeft="16dp"
+        android:max="50"
+        android:progress="25"
+        app:layout_constraintBottom_toTopOf="@+id/textViscosity"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textWSpeed" />
+
+    <TextView
+        android:id="@+id/textViscosity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:text="Вязкость (мкПа * c) - 500"
+        app:layout_constraintBottom_toTopOf="@+id/viscosityBar"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/wSpeedBar" />
+
+    <SeekBar
+        android:id="@+id/viscosityBar"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="218dp"
+        android:layout_marginLeft="16dp"
+        android:max="1000"
+        android:progress="500"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViscosity" />
+
+    <Button
+        android:id="@+id/startButton"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="63dp"
+        android:text="Пуск"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viscosityBar" />
+
 </android.support.constraint.ConstraintLayout>
