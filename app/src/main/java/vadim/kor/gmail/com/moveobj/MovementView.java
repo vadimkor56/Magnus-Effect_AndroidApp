@@ -18,6 +18,7 @@ public class MovementView extends SurfaceView implements SurfaceHolder.Callback 
 
     private int xVel;
     private int yVel;
+    private int angle;
 
     private int width;
     private int height;
@@ -52,6 +53,7 @@ public class MovementView extends SurfaceView implements SurfaceHolder.Callback 
 
         xVel = MainActivity.vSpeed;
         yVel = MainActivity.vSpeed;
+        angle = MainActivity.wSpeed;
     }
     @Override
     protected void onDraw(Canvas canvas) {
@@ -66,7 +68,7 @@ public class MovementView extends SurfaceView implements SurfaceHolder.Callback 
     public void updatePhysics() {
         xPos += xVel;
         yPos += yVel;
-        currentAngle += 5;
+        currentAngle += angle;
 
         if (yPos < 0 || yPos + ballHeight > height) {
             if (yPos < 0) {
