@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 public class SecondActivity extends AppCompatActivity {
+    MovementView movementView;
 
 
     @Override
@@ -18,7 +19,8 @@ public class SecondActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(new MovementView(this));
+        movementView = new MovementView(this);
+        setContentView(movementView);
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -28,11 +30,16 @@ public class SecondActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        movementView.stopMovementView();
+        this.finish();
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                Intent intent = new Intent(this, MainActivity.class);
-                startActivity(intent);
+                movementView.stopMovementView();
                 this.finish();
                 return true;
             default:

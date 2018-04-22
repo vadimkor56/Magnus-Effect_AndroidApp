@@ -103,6 +103,10 @@ public class MovementView extends SurfaceView implements SurfaceHolder.Callback 
         updateThread.start();
     }
 
+    public void stopMovementView() {
+        updateThread.setRunning(false);
+    }
+
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
     }
 
