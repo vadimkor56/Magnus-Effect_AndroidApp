@@ -48,7 +48,7 @@ public class MovementView extends SurfaceView implements SurfaceHolder.Callback 
         circlePaint = new Paint();
         circlePaint.setColor(Color.BLUE);
 
-
+    //nothing
 
         xVel = MainActivity.vSpeed;
         yVel = MainActivity.vSpeed;
