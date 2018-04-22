@@ -10,31 +10,35 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.widget.SeekBar;
 
 public class MovementView extends SurfaceView implements SurfaceHolder.Callback {
+    private final double PI = Math.PI;
+    private final double deltaT = 0.1;
+    private final double g = 9.81;
+
     private int xPos;
     private int yPos;
-
-    private int xVel;
-    private int yVel;
     private int angle;
+
+    private double vX;
+    private double vY;
+    private double vZ;
+
+    private double ro;
+    private double m;
+    private double v0;
+    private double w0;
+    private double nu;
+    private double r;
 
     private int width;
     private int height;
 
-    private int circleRadius;
-    private Paint circlePaint;
-
     private Bitmap ball;
     private int ballWidth;
     private int ballHeight;
-    private int currentAngle;
-
 
     UpdateThread updateThread;
-
-
 
     public MovementView(Context context) {
 
@@ -44,16 +48,23 @@ public class MovementView extends SurfaceView implements SurfaceHolder.Callback 
         ball = BitmapFactory.decodeResource(getResources(), R.drawable.ball);
         ballWidth = ball.getWidth();
         ballHeight = ball.getHeight();
-        currentAngle = 0;
-        circleRadius = 40;
-        circlePaint = new Paint();
+        angle = 0;
+        Paint circlePaint = new Paint();
         circlePaint.setColor(Color.BLUE);
 
-    //nothing
+        ro = 1.29;
+        m = 0.6;
+        v0 = 50;
+        w0 = -PI;
+        nu = 0.0000171;
+        r = 0.13;
 
-        xVel = MainActivity.vSpeed;
-        yVel = MainActivity.vSpeed;
-        angle = MainActivity.wSpeed;
+
+        /*ro = MainActivity.density;
+        m = MainActivity.weight;
+        v0 = MainActivity.vSpeed;
+        w0 = MainActivity.wSpeed;
+        nu = MainActivity.viscosity;*/
     }
     @Override
     protected void onDraw(Canvas canvas) {
@@ -61,14 +72,22 @@ public class MovementView extends SurfaceView implements SurfaceHolder.Callback 
         @SuppressLint("DrawAllocation")
         Matrix mxTransform = new Matrix();
         mxTransform.preTranslate(xPos, yPos);
-        mxTransform.preRotate(currentAngle, ballWidth / 2, ballHeight / 2);
+        mxTransform.preRotate(angle, ballWidth / 2, ballHeight / 2);
         canvas.drawBitmap(ball, mxTransform, null);
     }
 
     public void updatePhysics() {
-        xPos += xVel;
-        yPos += yVel;
-        currentAngle += angle;
+        xPos += (int) (vX * deltaT);
+        yPos += (int) (vY * deltaT);
+        angle += w0;
+
+        double deltaVx = 0;
+        double deltaVy = g - 2 * PI / (3 * m) * ro * v0 * r * r * vZ - 6 * PI * r * nu * vY / m;
+        double deltaVz = - 6 * PI * r * nu * vZ / m;
+
+        vX += deltaVx * deltaT;
+        vY += deltaVy * deltaT;
+        vZ += deltaVz * deltaT;
 
         if (yPos < 0 || yPos + ballHeight > height) {
             if (yPos < 0) {
@@ -76,7 +95,7 @@ public class MovementView extends SurfaceView implements SurfaceHolder.Callback 
             } else {
                 yPos = height - ballHeight;
             }
-            yVel *= -1;
+            vY *= -1;
         }
 
         if (xPos < 0 || xPos + ballWidth > width) {
@@ -85,7 +104,7 @@ public class MovementView extends SurfaceView implements SurfaceHolder.Callback 
             } else {
                 xPos = width - ballWidth;
             }
-            xVel *= -1;
+            vX *= -1;
         }
     }
 
@@ -97,6 +116,9 @@ public class MovementView extends SurfaceView implements SurfaceHolder.Callback 
 
         xPos = 0;
         yPos = 0;
+        vX = v0;
+        vY = 0;
+        vZ = 0;
 
         updateThread = new UpdateThread(this);
         updateThread.setRunning(true);
