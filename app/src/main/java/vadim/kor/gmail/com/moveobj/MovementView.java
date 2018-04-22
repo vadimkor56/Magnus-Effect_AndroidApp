@@ -1,5 +1,4 @@
 package vadim.kor.gmail.com.moveobj;
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -8,9 +7,9 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.widget.SeekBar;
 
 public class MovementView extends SurfaceView implements SurfaceHolder.Callback {
     private int xPos;
@@ -18,22 +17,17 @@ public class MovementView extends SurfaceView implements SurfaceHolder.Callback 
 
     private int xVel;
     private int yVel;
+    private int wVel;
 
     private int width;
     private int height;
-
-    private int circleRadius;
-    private Paint circlePaint;
 
     private Bitmap ball;
     private int ballWidth;
     private int ballHeight;
     private int currentAngle;
 
-
     UpdateThread updateThread;
-
-
 
     public MovementView(Context context) {
 
@@ -44,19 +38,18 @@ public class MovementView extends SurfaceView implements SurfaceHolder.Callback 
         ballWidth = ball.getWidth();
         ballHeight = ball.getHeight();
         currentAngle = 0;
-        circleRadius = 40;
-        circlePaint = new Paint();
+        Paint circlePaint = new Paint();
         circlePaint.setColor(Color.BLUE);
 
     //nothing
 
         xVel = MainActivity.vSpeed;
         yVel = MainActivity.vSpeed;
+        wVel = MainActivity.wSpeed;
     }
     @Override
     protected void onDraw(Canvas canvas) {
         canvas.drawColor(Color.WHITE);
-        @SuppressLint("DrawAllocation")
         Matrix mxTransform = new Matrix();
         mxTransform.preTranslate(xPos, yPos);
         mxTransform.preRotate(currentAngle, ballWidth / 2, ballHeight / 2);
@@ -66,7 +59,7 @@ public class MovementView extends SurfaceView implements SurfaceHolder.Callback 
     public void updatePhysics() {
         xPos += xVel;
         yPos += yVel;
-        currentAngle += 5;
+        currentAngle += wVel;
 
         if (yPos < 0 || yPos + ballHeight > height) {
             if (yPos < 0) {
@@ -114,6 +107,7 @@ public class MovementView extends SurfaceView implements SurfaceHolder.Callback 
                 updateThread.join();
                 retry = false;
             } catch (InterruptedException e) {
+                Log.d("MovementView", "Destroying error");
             }
         }
     }

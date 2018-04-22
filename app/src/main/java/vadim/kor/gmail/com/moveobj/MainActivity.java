@@ -30,6 +30,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     static int weight;
     static int viscosity;
 
+    private String densityBarName;
+    private String weightBarName;
+    private String vSpeedBarName;
+    private String wSpeedBarName;
+    private String viscosityBarName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +61,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         textVSpeed = findViewById(R.id.textVSpeed);
         textWSpeed = findViewById(R.id.textWSpeed);
         textViscosity = findViewById(R.id.textViscosity);
+
+        densityBarName = getString(R.string.densityBarName);
+        weightBarName = getString(R.string.weightBarName);
+        vSpeedBarName = getString(R.string.vSpeedBarName);
+        wSpeedBarName = getString(R.string.wSpeedBarName);
+        viscosityBarName = getString(R.string.viscosityBarName);
+
+        changeText(densityBar, densityBar.getProgress());
+        changeText(weightBar, weightBar.getProgress());
+        changeText(vSpeedBar, vSpeedBar.getProgress());
+        changeText(wSpeedBar, wSpeedBar.getProgress());
+        changeText(viscosityBar, viscosityBar.getProgress());
     }
 
     @Override
@@ -78,21 +95,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        changeText(seekBar, progress);
+    }
+
+    private void changeText(SeekBar seekBar, int progress) {
+        String newText;
         switch (seekBar.getId()) {
             case R.id.densityBar:
-                textDensity.setText("Плотность среды (кг/м^3) - " + String.valueOf(progress));
+                newText = densityBarName + " " + String.valueOf(progress);
+                textDensity.setText(newText);
                 break;
             case R.id.weightBar:
-                textWeight.setText("Масса мяча (кг) - " + String.valueOf(progress));
+                newText = weightBarName + " " + String.valueOf(progress);
+                textWeight.setText(newText);
                 break;
             case R.id.vSpeedBar:
-                textVSpeed.setText("Начальная скорость (м/с) - " + String.valueOf(progress));
+                newText = vSpeedBarName + " " + String.valueOf(progress);
+                textVSpeed.setText(newText);
                 break;
             case R.id.wSpeedBar:
-                textWSpeed.setText("Угловая скорость (рад/с) - " + String.valueOf(progress));
+                newText = wSpeedBarName + " " + String.valueOf(progress);
+                textWSpeed.setText(newText);
                 break;
             case R.id.viscosityBar:
-                textViscosity.setText("Вязкость (мкПа * c) - " + String.valueOf(progress));
+                newText = viscosityBarName + " " + String.valueOf(progress);
+                textViscosity.setText(newText);
                 break;
         }
     }
