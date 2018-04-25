@@ -52,19 +52,19 @@ public class MovementView extends SurfaceView implements SurfaceHolder.Callback 
         Paint circlePaint = new Paint();
         circlePaint.setColor(Color.BLUE);
 
-        ro = 1.29;
+        /*ro = 1.29;
         m = 0.6;
         v0 = 50;
         w0 = -PI;
         nu = 0.0000171;
-        r = 0.13;
+        r = 0.13;*/
 
 
-        /*ro = MainActivity.density;
+        ro = MainActivity.density;
         m = MainActivity.weight;
         v0 = MainActivity.vSpeed;
         w0 = MainActivity.wSpeed;
-        nu = MainActivity.viscosity;*/
+        nu = MainActivity.viscosity;
     }
     @Override
     protected void onDraw(Canvas canvas) {

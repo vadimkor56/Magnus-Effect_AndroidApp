@@ -1,40 +1,42 @@
 package vadim.kor.gmail.com.moveobj;
 import android.content.Intent;
-import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, SeekBar.OnSeekBarChangeListener {
 
     Button startBtn;
-    SeekBar densityBar;
+    SeekBar heightBar;
     SeekBar weightBar;
     SeekBar vSpeedBar;
     SeekBar wSpeedBar;
     SeekBar viscosityBar;
+    SeekBar radiusBar;
 
-    TextView textDensity;
+    TextView textHeight;
     TextView textWeight;
     TextView textVSpeed;
     TextView textWSpeed;
     TextView textViscosity;
+    TextView textRadius;
 
     static int density;
     static int vSpeed;
     static int wSpeed;
     static int weight;
     static int viscosity;
+    static int radius;
 
-    private String densityBarName;
+    private String heightBarName;
     private String weightBarName;
     private String vSpeedBarName;
     private String wSpeedBarName;
     private String viscosityBarName;
+    private String radiusBarName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,46 +46,52 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         startBtn = findViewById(R.id.startButton);
         startBtn.setOnClickListener(this);
 
-        densityBar = findViewById(R.id.densityBar);
+        heightBar = findViewById(R.id.heightBar);
         weightBar = findViewById(R.id.weightBar);
         vSpeedBar = findViewById(R.id.vSpeedBar);
         wSpeedBar = findViewById(R.id.wSpeedBar);
         viscosityBar = findViewById(R.id.viscosityBar);
+        radiusBar = findViewById(R.id.radiusBar);
 
-        densityBar.setOnSeekBarChangeListener(this);
+        heightBar.setOnSeekBarChangeListener(this);
         weightBar.setOnSeekBarChangeListener(this);
         vSpeedBar.setOnSeekBarChangeListener(this);
         wSpeedBar.setOnSeekBarChangeListener(this);
         viscosityBar.setOnSeekBarChangeListener(this);
+        radiusBar.setOnSeekBarChangeListener(this);
 
-        textDensity = findViewById(R.id.textDensity);
+        textHeight = findViewById(R.id.textHeight);
         textWeight = findViewById(R.id.textWeight);
         textVSpeed = findViewById(R.id.textVSpeed);
         textWSpeed = findViewById(R.id.textWSpeed);
         textViscosity = findViewById(R.id.textViscosity);
+        textRadius = findViewById(R.id.textRadius);
 
-        densityBarName = getString(R.string.densityBarName);
+        heightBarName = getString(R.string.heightBarName);
         weightBarName = getString(R.string.weightBarName);
         vSpeedBarName = getString(R.string.vSpeedBarName);
         wSpeedBarName = getString(R.string.wSpeedBarName);
         viscosityBarName = getString(R.string.viscosityBarName);
+        radiusBarName = getString(R.string.radiusBarName);
 
-        changeText(densityBar, densityBar.getProgress());
+        changeText(heightBar, heightBar.getProgress());
         changeText(weightBar, weightBar.getProgress());
         changeText(vSpeedBar, vSpeedBar.getProgress());
         changeText(wSpeedBar, wSpeedBar.getProgress());
         changeText(viscosityBar, viscosityBar.getProgress());
+        changeText(radiusBar, radiusBar.getProgress());
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.startButton:
-                density = densityBar.getProgress();
+                density = heightBar.getProgress();
                 vSpeed = vSpeedBar.getProgress();
                 wSpeed = wSpeedBar.getProgress();
                 weight = weightBar.getProgress();
                 viscosity = viscosityBar.getProgress();
+                radius = radiusBar.getProgress();
 
                 Intent intent = new Intent(this, SecondActivity.class);
                 startActivity(intent);
@@ -101,9 +109,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void changeText(SeekBar seekBar, int progress) {
         String newText;
         switch (seekBar.getId()) {
-            case R.id.densityBar:
-                newText = densityBarName + " " + String.valueOf(progress);
-                textDensity.setText(newText);
+            case R.id.heightBar:
+                newText = heightBarName + " " + String.valueOf(progress);
+                textHeight.setText(newText);
                 break;
             case R.id.weightBar:
                 newText = weightBarName + " " + String.valueOf(progress);
@@ -120,6 +128,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.viscosityBar:
                 newText = viscosityBarName + " " + String.valueOf(progress);
                 textViscosity.setText(newText);
+                break;
+            case R.id.radiusBar:
+                newText = radiusBarName + " " + String.valueOf(progress);
+                textRadius.setText(newText);
                 break;
         }
     }

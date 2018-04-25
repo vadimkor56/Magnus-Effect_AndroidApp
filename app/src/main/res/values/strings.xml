@@ -1,10 +1,11 @@
 <resources>
     <string name="app_name">moveObj</string>
     <string name="heading">Выберите настройки полета</string>
-    <string name="densityBarName">Плотность среды (кг/м^3) -</string>
+    <string name="heightBarName">Высота (м) -</string>
     <string name="weightBarName">Масса мяча (г) -</string>
     <string name="vSpeedBarName">Начальная скорость (м/с) -</string>
     <string name="wSpeedBarName">Угловая скорость (рад/с) -</string>
     <string name="viscosityBarName">Вязкость (мкПа * c) -</string>
     <string name="startButtonName">Пуск</string>
+    <string name="radiusBarName">Радиус мяча (см) -</string>
 </resources>
