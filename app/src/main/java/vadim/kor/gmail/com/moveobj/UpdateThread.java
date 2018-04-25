@@ -7,8 +7,6 @@ import android.view.SurfaceHolder;
 public class UpdateThread extends Thread {
 
     private long time;
-    private long timeOfStart;
-    private long timeOfDelay;
     private final int fps = 20;
     private boolean toRun = false;
     private MovementView movementView;
@@ -27,8 +25,8 @@ public class UpdateThread extends Thread {
     @Override
     public void run() {
         Canvas canvas;
-        timeOfDelay = 300;
-        timeOfStart = System.currentTimeMillis();
+        long timeOfDelay = 300;
+        long timeOfStart = System.currentTimeMillis();
         while (toRun) {
 
             long cTime = System.currentTimeMillis();

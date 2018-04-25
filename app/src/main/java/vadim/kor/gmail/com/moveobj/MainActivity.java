@@ -24,11 +24,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     TextView textViscosity;
     TextView textRadius;
 
-    static int height;
-    static int vSpeed;
-    static int wSpeed;
-    static int weight;
-    static int viscosity;
+    static double height;
+    static double vSpeed;
+    static double wSpeed;
+    static double weight;
+    static double viscosity;
     static double radius;
 
     private String heightBarName;
