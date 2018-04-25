@@ -181,8 +181,8 @@ public class MovementView extends SurfaceView implements SurfaceHolder.Callback 
         vY = 0;
         vZ = 0;
         wX = w0;
-        wY = -1;
-        wZ = -1;
+        wY = w0/3;
+        wZ = w0/3;
 
         mPath.moveTo(xPos, yPos);
         mPaint = new Paint();
