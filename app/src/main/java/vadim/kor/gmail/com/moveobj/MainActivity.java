@@ -24,12 +24,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     TextView textViscosity;
     TextView textRadius;
 
-    static int density;
+    static int height;
     static int vSpeed;
     static int wSpeed;
     static int weight;
     static int viscosity;
-    static int radius;
+    static double radius;
 
     private String heightBarName;
     private String weightBarName;
@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.startButton:
-                density = heightBar.getProgress();
+                height = heightBar.getProgress();
                 vSpeed = vSpeedBar.getProgress();
                 wSpeed = wSpeedBar.getProgress();
                 weight = weightBar.getProgress();
