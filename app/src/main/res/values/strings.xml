@@ -5,7 +5,7 @@
     <string name="weightBarName">Масса мяча (г) -</string>
     <string name="vSpeedBarName">Начальная скорость (м/с) -</string>
     <string name="wSpeedBarName">Угловая скорость (рад/с) -</string>
-    <string name="viscosityBarName">Вязкость (мкПа * c) -</string>
+    <string name="viscosityBarName">Температура (К) -</string>
     <string name="startButtonName">Пуск</string>
     <string name="radiusBarName">Радиус мяча (см) -</string>
 </resources>

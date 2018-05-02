@@ -46,6 +46,8 @@ public class MovementView extends SurfaceView implements SurfaceHolder.Callback 
     private double w0;
     private double nu;
     private double r;
+    private double tempr;
+
     private double g = 9.81;
     private double loss = 0.5;
 
@@ -82,7 +84,8 @@ public class MovementView extends SurfaceView implements SurfaceHolder.Callback 
         m = MainActivity.weight / 1000;
         v0 = MainActivity.vSpeed;
         w0 = MainActivity.wSpeed;
-        nu = MainActivity.viscosity / 6000;
+        tempr = MainActivity.tempr;
+        nu = 900 * Math.sqrt(tempr) * 1.38 * Math.pow(10, -23) / Math.sqrt(2) / PI / 0.09 / Math.pow(10, -18) / 8.31;
         ro = M / Rconst / T * 100000 * Math.exp(-M * g * h / Rconst / T);
 
         int newWidth = (int) (2 * r * displayHeightInDp / h) == 0 ? 1 : (int) (2 * r * displayHeightInDp / h);

@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     static double weight;
     static double viscosity;
     static double radius;
+    static double tempr;
 
     private String heightBarName;
     private String weightBarName;
@@ -50,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         weightBar = findViewById(R.id.weightBar);
         vSpeedBar = findViewById(R.id.vSpeedBar);
         wSpeedBar = findViewById(R.id.wSpeedBar);
-        viscosityBar = findViewById(R.id.viscosityBar);
+        viscosityBar = findViewById(R.id.temprBar);
         radiusBar = findViewById(R.id.radiusBar);
 
         heightBar.setOnSeekBarChangeListener(this);
@@ -64,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         textWeight = findViewById(R.id.textWeight);
         textVSpeed = findViewById(R.id.textVSpeed);
         textWSpeed = findViewById(R.id.textWSpeed);
-        textViscosity = findViewById(R.id.textViscosity);
+        textViscosity = findViewById(R.id.textTempr);
         textRadius = findViewById(R.id.textRadius);
 
         heightBarName = getString(R.string.heightBarName);
@@ -90,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 vSpeed = vSpeedBar.getProgress();
                 wSpeed = wSpeedBar.getProgress();
                 weight = weightBar.getProgress();
-                viscosity = viscosityBar.getProgress();
+                tempr = viscosityBar.getProgress();
                 radius = radiusBar.getProgress();
 
                 Intent intent = new Intent(this, SecondActivity.class);
@@ -125,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 newText = wSpeedBarName + " " + String.valueOf(progress);
                 textWSpeed.setText(newText);
                 break;
-            case R.id.viscosityBar:
+            case R.id.temprBar:
                 newText = viscosityBarName + " " + String.valueOf(progress);
                 textViscosity.setText(newText);
                 break;
