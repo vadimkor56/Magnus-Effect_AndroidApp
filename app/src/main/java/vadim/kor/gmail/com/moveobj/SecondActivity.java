@@ -60,9 +60,16 @@ public class SecondActivity extends AppCompatActivity implements View.OnClickLis
         if (isRunning) {
             movementView.updateThread.setRunning(false);
 
-            double v = Math.sqrt(movementView.vX * movementView.vX +
-                    movementView.vY * movementView.vY);
-            String parameters = "Скорость - " + String.valueOf(v) + " м/с";
+            double vXParam = movementView.getvX();
+            double vYParam = movementView.getvY();
+            double wParam = movementView.getW();
+            double xParam = movementView.getXpos();
+            double yParam = movementView.getYpos();
+
+            String parameters = "Скорость по оси Ox:   " + String.valueOf(vXParam) + " м/с\nСкорость по оси Oy:   " +
+                    String.valueOf(vYParam) + " м/с\nУгловая скорость:   " + String.valueOf(wParam) +
+                    " рад/с\nКоордината по оси Ox:   " + String.valueOf(xParam) +
+                    " м\nКоордината по оси Oy:   " + String.valueOf(yParam) + " м"  ;
             AlertDialog.Builder builder = new AlertDialog.Builder(SecondActivity.this);
             builder.setTitle("Параметры полёта")
                     .setMessage(parameters)

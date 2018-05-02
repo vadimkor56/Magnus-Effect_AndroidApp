@@ -27,15 +27,15 @@ public class MovementView extends SurfaceView implements SurfaceHolder.Callback 
     private final double T = 273;
     private final double EPS = 0.01;
 
-    public int xPos;
-    public int yPos;
+    private static int xPos;
+    private static int yPos;
     private int angle;
 
-    public double vX;
-    public double vY;
-    public double vZ;
+    private double vX;
+    private static double vY;
+    private double vZ;
 
-    private double wX;
+    private static double wX;
     private double wY;
     private double wZ;
 
@@ -62,6 +62,26 @@ public class MovementView extends SurfaceView implements SurfaceHolder.Callback 
 
     private Path mPath = new Path();
     private Paint mPaint;
+
+    public double getvX() {
+        return ((int) (100 * (vX * h / displayHeightInPx))) / 100d;
+    }
+
+    public double getvY() {
+        return ((int) (100 * (vY * h / displayHeightInPx))) / 100d;
+    }
+
+    public double getW() {
+        return ((int) (100 * (wX * h / displayHeightInPx))) / 100d;
+    }
+
+    public double getXpos() {
+        return ((int) (100 * (xPos * h / displayHeightInPx))) / 100d;
+    }
+
+    public double getYpos() {
+        return ((int) (100 * (yPos * h / displayHeightInPx))) / 100d;
+    }
 
     private float getDisplayHeightInDp() {
         Display display = ((Activity) getContext()).getWindowManager().getDefaultDisplay();
@@ -97,6 +117,7 @@ public class MovementView extends SurfaceView implements SurfaceHolder.Callback 
         ballHeightInPx = ball.getHeight();
     }
 
+
     @Override
     protected void onDraw(Canvas canvas) {
         canvas.drawColor(Color.WHITE);
@@ -117,9 +138,9 @@ public class MovementView extends SurfaceView implements SurfaceHolder.Callback 
         yPos += (int) (vY * deltaT);
         angle += w0;
 
-       mPath.quadTo(xPos + ballWidthInPx / 2, yPos + ballHeightInPx / 2,
+        mPath.quadTo(xPos + ballWidthInPx / 2, yPos + ballHeightInPx / 2,
                 (prevX + xPos + ballWidthInPx / 2) / 2, (prevY + yPos + ballHeightInPx /
-                       2) / 2);
+                        2) / 2);
 
         /*double deltaVx = 2 * PI / (3 * m) * ro * v0 * r * r * (vZ * wY - vY * wZ) /
                 Math.sqrt(wX * wX + wY * wY + wZ * wZ) - 6 * PI * r * nu * vX / m;
