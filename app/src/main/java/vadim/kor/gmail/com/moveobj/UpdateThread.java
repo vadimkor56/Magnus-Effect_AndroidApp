@@ -11,6 +11,7 @@ public class UpdateThread extends Thread {
     private boolean toRun = false;
     private MovementView movementView;
     private SurfaceHolder surfaceHolder;
+    public Canvas canvas;
 
     UpdateThread(MovementView rMovementView) {
         movementView = rMovementView;
@@ -24,30 +25,31 @@ public class UpdateThread extends Thread {
     @SuppressLint("WrongCall")
     @Override
     public void run() {
-        Canvas canvas;
+
         long timeOfDelay = 300;
         long timeOfStart = System.currentTimeMillis();
-        while (toRun) {
+        while (true) {
+            if (toRun) {
+                long cTime = System.currentTimeMillis();
 
-            long cTime = System.currentTimeMillis();
-
-            if ((cTime - time) <= (1000 / fps) && cTime > timeOfStart + timeOfDelay) {
-                canvas = null;
-                try {
-                    canvas = surfaceHolder.lockCanvas(null);
-                    movementView.updatePhysics();
-                    movementView.onDraw(canvas);
-                } catch (NullPointerException ignored) {
-                    Log.d("UpdateThread", "Null pointer exception in movementView.onDraw()");
-                } catch (Exception e) {
-                    Log.d("UpdateThread", "Exception in movementView.onDraw()");
-                } finally {
-                    if (canvas != null) {
-                        surfaceHolder.unlockCanvasAndPost(canvas);
+                if ((cTime - time) <= (1000 / fps) && cTime > timeOfStart + timeOfDelay) {
+                    canvas = null;
+                    try {
+                        canvas = surfaceHolder.lockCanvas(null);
+                        movementView.updatePhysics();
+                        movementView.onDraw(canvas);
+                    } catch (NullPointerException ignored) {
+                        Log.d("UpdateThread", "Null pointer exception in movementView.onDraw()");
+                    } catch (Exception e) {
+                        Log.d("UpdateThread", "Exception in movementView.onDraw()");
+                    } finally {
+                        if (canvas != null) {
+                            surfaceHolder.unlockCanvasAndPost(canvas);
+                        }
                     }
                 }
+                time = cTime;
             }
-            time = cTime;
         }
     }
 }

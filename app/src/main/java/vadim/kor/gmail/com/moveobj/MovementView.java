@@ -27,13 +27,13 @@ public class MovementView extends SurfaceView implements SurfaceHolder.Callback 
     private final double T = 273;
     private final double EPS = 0.01;
 
-    private int xPos;
-    private int yPos;
+    public int xPos;
+    public int yPos;
     private int angle;
 
-    private double vX;
-    private double vY;
-    private double vZ;
+    public double vX;
+    public double vY;
+    public double vZ;
 
     private double wX;
     private double wY;

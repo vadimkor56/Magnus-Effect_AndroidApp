@@ -28,7 +28,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     static double vSpeed;
     static double wSpeed;
     static double weight;
-    static double viscosity;
     static double radius;
     static double tempr;
 
