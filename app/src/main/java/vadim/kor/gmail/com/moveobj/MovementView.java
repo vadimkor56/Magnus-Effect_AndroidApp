@@ -6,9 +6,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.CornerPathEffect;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PathEffect;
 import android.graphics.Rect;
 import android.util.DisplayMetrics;
 import android.view.Display;
@@ -106,10 +108,14 @@ public class MovementView extends SurfaceView implements SurfaceHolder.Callback 
     }
 
     public void updatePhysics() {
-        mPath.lineTo(xPos, yPos);
+        float prevX = xPos;
+        float prevY = yPos;
+
         xPos += (int) (vX * deltaT);
         yPos += (int) (vY * deltaT);
         angle += w0;
+
+        mPath.quadTo(xPos, yPos, (prevX + xPos) / 2, (prevY + yPos) / 2);
 
         /*double deltaVx = 2 * PI / (3 * m) * ro * v0 * r * r * (vZ * wY - vY * wZ) /
                 Math.sqrt(wX * wX + wY * wY + wZ * wZ) - 6 * PI * r * nu * vX / m;
@@ -124,6 +130,7 @@ public class MovementView extends SurfaceView implements SurfaceHolder.Callback 
 
         double deltaVx;
         double deltaVy;
+        double deltaWx = 0;
 
         /*if (w0 < EPS) {
             deltaVx = - directionX * 6 * PI * r * nu * vX / m;
@@ -135,21 +142,29 @@ public class MovementView extends SurfaceView implements SurfaceHolder.Callback 
                     Math.sqrt(wX * wX + wY * wY + wZ * wZ) - 6 * PI * r * nu * vY / m);
         }*/
 
-        deltaVx = 10 * Math.sqrt(wX * wX + wY * wY + wZ * wZ) - 6 * PI * r * nu * vX / m;
-        deltaVy = g - 10 * PI / (3 * m) * Math.sqrt(wX * wX + wY * wY + wZ * wZ) -
-                6 * PI * r * nu * vY / m;
+        if (w0 < EPS) {
+            deltaVx = - 6 * PI * r * nu * vX / m;
+            deltaVy = g - 6 * PI * r * nu * vY / m;
+        } else {
+            deltaVx = 3 * Math.sqrt(wX * wX + wY * wY + wZ * wZ) - 6 * PI * r * nu * vX / m;
+            deltaVy = g - 6 * PI / (3 * m) * Math.sqrt(wX * wX + wY * wY + wZ * wZ) -
+                    6 * PI * r * nu * vY / m;
+            deltaWx = - 6 * PI * r * nu * wX / m;
+        }
 
         vX += deltaVx * deltaT;
         vY += deltaVy * deltaT;
+        wX += deltaWx * deltaT;
 
         if (yPos < 0 || yPos + ballHeight > height) {
             if (yPos < 0) {
                 yPos = 0;
             } else {
                 yPos = height - ballHeight;
+                vX *= 0.9;
             }
             vY *= -1 * loss;
-            w0 *= loss;
+            w0 *= 0.8;
             directionY *= -1;
         }
 
@@ -193,6 +208,7 @@ public class MovementView extends SurfaceView implements SurfaceHolder.Callback 
         mPaint.setColor(color);
         mPaint.setStrokeWidth(3);
         mPaint.setStyle(Paint.Style.STROKE);
+        mPaint.setPathEffect(new CornerPathEffect(10f));
 
         updateThread = new UpdateThread(this);
         updateThread.setRunning(true);
