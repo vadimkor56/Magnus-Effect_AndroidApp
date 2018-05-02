@@ -1,4 +1,5 @@
 package vadim.kor.gmail.com.moveobj;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -10,13 +11,11 @@ import android.graphics.CornerPathEffect;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.PathEffect;
 import android.graphics.Rect;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.WindowManager;
 
 import java.util.Random;
 
@@ -27,7 +26,6 @@ public class MovementView extends SurfaceView implements SurfaceHolder.Callback 
     private final double Rconst = 8.31;
     private final double T = 273;
     private final double EPS = 0.01;
-
 
     private int xPos;
     private int yPos;
@@ -51,33 +49,33 @@ public class MovementView extends SurfaceView implements SurfaceHolder.Callback 
     private double g = 9.81;
     private double loss = 0.5;
 
-    private int width;
-    private int height;
+    private int displayWidthInPx;
+    private int displayHeightInPx;
 
     private Bitmap ball;
-    private int ballWidth;
-    private int ballHeight;
-    private int directionX = 1;
-    private int directionY = 1;
+    private int ballWidthInPx;
+    private int ballHeightInPx;
 
     UpdateThread updateThread;
 
     private Path mPath = new Path();
     private Paint mPaint;
 
+    private float getDisplayHeightInDp() {
+        Display display = ((Activity) getContext()).getWindowManager().getDefaultDisplay();
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        display.getMetrics(outMetrics);
+        return outMetrics.heightPixels / getResources().getDisplayMetrics().density;
+    }
+
     public MovementView(Context context) {
 
         super(context);
         getHolder().addCallback(this);
 
-        Display display = ((Activity) getContext()).getWindowManager().getDefaultDisplay();
-        DisplayMetrics outMetrics = new DisplayMetrics ();
-        display.getMetrics(outMetrics);
-        float dpHeight = outMetrics.heightPixels / getResources().getDisplayMetrics().density;
+        float displayHeightInDp = getDisplayHeightInDp();
 
         angle = 0;
-        Paint circlePaint = new Paint();
-        circlePaint.setColor(Color.BLUE);
 
         r = MainActivity.radius / 100;
         h = MainActivity.height;
@@ -87,14 +85,15 @@ public class MovementView extends SurfaceView implements SurfaceHolder.Callback 
         nu = MainActivity.viscosity / 6000;
         ro = M / Rconst / T * 100000 * Math.exp(-M * g * h / Rconst / T);
 
-        int newWidth = (int) (2 * r * dpHeight / h) == 0 ? 1 : (int) (2 * r * dpHeight / h);
+        int newWidth = (int) (2 * r * displayHeightInDp / h) == 0 ? 1 : (int) (2 * r * displayHeightInDp / h);
 
         Bitmap notScaledBall = BitmapFactory.decodeResource(getResources(), R.drawable.ball);
         ball = Bitmap.createScaledBitmap(notScaledBall, newWidth, newWidth, true);
 
-        ballWidth = ball.getWidth();
-        ballHeight = ball.getHeight();
+        ballWidthInPx = ball.getWidth();
+        ballHeightInPx = ball.getHeight();
     }
+
     @Override
     protected void onDraw(Canvas canvas) {
         canvas.drawColor(Color.WHITE);
@@ -103,19 +102,21 @@ public class MovementView extends SurfaceView implements SurfaceHolder.Callback 
         @SuppressLint("DrawAllocation")
         Matrix mxTransform = new Matrix();
         mxTransform.preTranslate(xPos, yPos);
-        mxTransform.preRotate(angle, ballWidth / 2, ballHeight / 2);
+        mxTransform.preRotate(angle, ballWidthInPx / 2, ballHeightInPx / 2);
         canvas.drawBitmap(ball, mxTransform, null);
     }
 
     public void updatePhysics() {
-        float prevX = xPos;
-        float prevY = yPos;
+        float prevX = xPos + ballWidthInPx / 2;
+        float prevY = yPos + ballHeightInPx / 2;
 
         xPos += (int) (vX * deltaT);
         yPos += (int) (vY * deltaT);
         angle += w0;
 
-        mPath.quadTo(xPos, yPos, (prevX + xPos) / 2, (prevY + yPos) / 2);
+       mPath.quadTo(xPos + ballWidthInPx / 2, yPos + ballHeightInPx / 2,
+                (prevX + xPos + ballWidthInPx / 2) / 2, (prevY + yPos + ballHeightInPx /
+                       2) / 2);
 
         /*double deltaVx = 2 * PI / (3 * m) * ro * v0 * r * r * (vZ * wY - vY * wZ) /
                 Math.sqrt(wX * wX + wY * wY + wZ * wZ) - 6 * PI * r * nu * vX / m;
@@ -143,51 +144,49 @@ public class MovementView extends SurfaceView implements SurfaceHolder.Callback 
         }*/
 
         if (w0 < EPS) {
-            deltaVx = - 6 * PI * r * nu * vX / m;
+            deltaVx = -6 * PI * r * nu * vX / m;
             deltaVy = g - 6 * PI * r * nu * vY / m;
         } else {
             deltaVx = 3 * Math.sqrt(wX * wX + wY * wY + wZ * wZ) - 6 * PI * r * nu * vX / m;
             deltaVy = g - 6 * PI / (3 * m) * Math.sqrt(wX * wX + wY * wY + wZ * wZ) -
                     6 * PI * r * nu * vY / m;
-            deltaWx = - 6 * PI * r * nu * wX / m;
+            deltaWx = -6 * PI * r * nu * wX / m;
         }
 
         vX += deltaVx * deltaT;
         vY += deltaVy * deltaT;
         wX += deltaWx * deltaT;
 
-        if (yPos < 0 || yPos + ballHeight > height) {
+        if (yPos < 0 || yPos + ballHeightInPx > displayHeightInPx) {
             if (yPos < 0) {
                 yPos = 0;
             } else {
-                yPos = height - ballHeight;
+                yPos = displayHeightInPx - ballHeightInPx;
                 vX *= 0.9;
             }
             vY *= -1 * loss;
             w0 *= 0.8;
-            directionY *= -1;
         }
 
-        if (xPos < 0 || xPos + ballWidth > width) {
+        if (xPos < 0 || xPos + ballWidthInPx > displayWidthInPx) {
             if (xPos < 0) {
                 xPos = 0;
             } else {
-                xPos = width - ballWidth;
+                xPos = displayWidthInPx - ballWidthInPx;
             }
             vX *= -1 * loss;
             w0 *= loss;
-            directionX *= -1;
         }
     }
 
     public void surfaceCreated(SurfaceHolder holder) {
 
         Rect surfaceFrame = holder.getSurfaceFrame();
-        width = surfaceFrame.width();
-        height = surfaceFrame.height();
+        displayWidthInPx = surfaceFrame.width();
+        displayHeightInPx = surfaceFrame.height();
 
-        v0 = height / h * v0;
-        g = g * height / h;
+        v0 = displayHeightInPx / h * v0;
+        g = g * displayHeightInPx / h;
 
         xPos = 0;
         yPos = 0;
@@ -196,10 +195,10 @@ public class MovementView extends SurfaceView implements SurfaceHolder.Callback 
         vY = 0;
         vZ = 0;
         wX = w0;
-        wY = w0/3;
-        wZ = w0/3;
+        wY = w0 / 3;
+        wZ = w0 / 3;
 
-        mPath.moveTo(xPos, yPos);
+        mPath.moveTo(xPos + ballWidthInPx / 2, yPos + ballHeightInPx / 2);
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
         Random rnd = new Random();
@@ -214,6 +213,7 @@ public class MovementView extends SurfaceView implements SurfaceHolder.Callback 
         updateThread.setRunning(true);
         updateThread.start();
     }
+
 
     public void stopMovementView() {
         updateThread.setRunning(false);
