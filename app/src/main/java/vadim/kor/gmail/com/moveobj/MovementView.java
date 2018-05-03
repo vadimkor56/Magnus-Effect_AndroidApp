@@ -83,6 +83,7 @@ public class MovementView extends SurfaceView implements SurfaceHolder.Callback 
         return ((int) (100 * (yPos * h / displayHeightInPx))) / 100d;
     }
 
+
     private float getDisplayHeightInDp() {
         Display display = ((Activity) getContext()).getWindowManager().getDefaultDisplay();
         DisplayMetrics outMetrics = new DisplayMetrics();

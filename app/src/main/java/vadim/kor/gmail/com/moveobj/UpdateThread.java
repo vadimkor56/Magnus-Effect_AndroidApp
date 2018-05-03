@@ -15,6 +15,10 @@ public class UpdateThread extends Thread {
     private SurfaceHolder surfaceHolder;
     public Canvas canvas;
 
+    public double getTime() {
+        return ((int) (100 * time)) / 100d;
+    }
+
     UpdateThread(MovementView rMovementView) {
         movementView = rMovementView;
         surfaceHolder = movementView.getHolder();

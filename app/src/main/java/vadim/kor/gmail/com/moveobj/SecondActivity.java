@@ -53,11 +53,13 @@ public class SecondActivity extends AppCompatActivity implements View.OnClickLis
             double wParam = movementView.getW();
             double xParam = movementView.getXpos();
             double yParam = movementView.getYpos();
+            double timeParam = movementView.updateThread.getTime();
 
             String parameters = "Скорость по оси Ox:   " + String.valueOf(vXParam) + " м/с\nСкорость по оси Oy:   " +
                     String.valueOf(vYParam) + " м/с\nУгловая скорость:   " + String.valueOf(wParam) +
                     " рад/с\nКоордината по оси Ox:   " + String.valueOf(xParam) +
-                    " м\nКоордината по оси Oy:   " + String.valueOf(yParam) + " м";
+                    " м\nКоордината по оси Oy:   " + String.valueOf(yParam) + " м\nВремя:   " +
+                    String.valueOf(timeParam) + " c";
 
             AlertDialog.Builder builder = new AlertDialog.Builder(SecondActivity.this);
             builder.setTitle("Параметры полёта")
