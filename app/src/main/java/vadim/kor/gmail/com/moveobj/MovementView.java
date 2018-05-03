@@ -72,7 +72,7 @@ public class MovementView extends SurfaceView implements SurfaceHolder.Callback 
     }
 
     public double getW() {
-        return ((int) (100 * (wX * h / displayHeightInPx))) / 100d;
+        return ((int) (100 * wX)) / 100d;
     }
 
     public double getXpos() {
