@@ -27,15 +27,15 @@ public class MovementView extends SurfaceView implements SurfaceHolder.Callback 
     private final double T = 273;
     private final double EPS = 0.01;
 
-    private static int xPos;
-    private static int yPos;
+    private int xPos;
+    private int yPos;
     private int angle;
 
     private double vX;
-    private static double vY;
+    private double vY;
     private double vZ;
 
-    private static double wX;
+    private double wX;
     private double wY;
     private double wZ;
 
@@ -158,16 +158,6 @@ public class MovementView extends SurfaceView implements SurfaceHolder.Callback 
         double deltaVy;
         double deltaWx = 0;
 
-        /*if (w0 < EPS) {
-            deltaVx = - directionX * 6 * PI * r * nu * vX / m;
-            deltaVy = g - directionY * 6 * PI * r * nu * vY / m;
-        } else {
-            deltaVx = directionX * (2 * PI / (3 * m) * ro * v0 * r * r * (vZ * wY - vY * wZ) /
-                    Math.sqrt(wX * wX + wY * wY + wZ * wZ) - 6 * PI * r * nu * vX / m);
-            deltaVy = g + directionY * (2 * PI / (3 * m) * ro * v0 * r * r * (vX * wZ - vZ * wX) /
-                    Math.sqrt(wX * wX + wY * wY + wZ * wZ) - 6 * PI * r * nu * vY / m);
-        }*/
-
         if (w0 < EPS) {
             deltaVx = -6 * PI * r * nu * vX / m;
             deltaVy = g - 6 * PI * r * nu * vY / m;
@@ -224,21 +214,24 @@ public class MovementView extends SurfaceView implements SurfaceHolder.Callback 
         wZ = w0 / 3;
 
         mPath.moveTo(xPos + ballWidthInPx / 2, yPos + ballHeightInPx / 2);
-        mPaint = new Paint();
-        mPaint.setAntiAlias(true);
-        Random rnd = new Random();
-        int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256),
-                rnd.nextInt(256));
-        mPaint.setColor(color);
-        mPaint.setStrokeWidth(3);
-        mPaint.setStyle(Paint.Style.STROKE);
-        mPaint.setPathEffect(new CornerPathEffect(10f));
-
+        mPaint = createPaint();
         updateThread = new UpdateThread(this);
         updateThread.setRunning(true);
         updateThread.start();
     }
 
+    private Paint createPaint() {
+        Paint paint = new Paint();
+        paint.setAntiAlias(true);
+        Random rnd = new Random();
+        int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256),
+                rnd.nextInt(256));
+        paint.setColor(color);
+        paint.setStrokeWidth(3);
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setPathEffect(new CornerPathEffect(10f));
+        return paint;
+    }
 
     public void stopMovementView() {
         updateThread.setRunning(false);
