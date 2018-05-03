@@ -41,24 +41,12 @@ public class SecondActivity extends AppCompatActivity implements View.OnClickLis
         this.finish();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                movementView.stopMovementView();
-                this.finish();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
     private boolean isRunning = true;
 
     @Override
     public void onClick(View view) {
         if (isRunning) {
-            movementView.updateThread.setRunning(false);
+            movementView.updateThread.setPause(true);
 
             double vXParam = movementView.getvX();
             double vYParam = movementView.getvY();
@@ -69,7 +57,8 @@ public class SecondActivity extends AppCompatActivity implements View.OnClickLis
             String parameters = "Скорость по оси Ox:   " + String.valueOf(vXParam) + " м/с\nСкорость по оси Oy:   " +
                     String.valueOf(vYParam) + " м/с\nУгловая скорость:   " + String.valueOf(wParam) +
                     " рад/с\nКоордината по оси Ox:   " + String.valueOf(xParam) +
-                    " м\nКоордината по оси Oy:   " + String.valueOf(yParam) + " м"  ;
+                    " м\nКоордината по оси Oy:   " + String.valueOf(yParam) + " м";
+
             AlertDialog.Builder builder = new AlertDialog.Builder(SecondActivity.this);
             builder.setTitle("Параметры полёта")
                     .setMessage(parameters)
@@ -78,15 +67,13 @@ public class SecondActivity extends AppCompatActivity implements View.OnClickLis
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     dialog.cancel();
+                                    movementView.updateThread.setPause(false);
+                                    isRunning = true;
                                 }
                             });
             AlertDialog alert = builder.create();
             alert.show();
             isRunning = false;
-        } else {
-            movementView.updateThread.setRunning(true);
-            isRunning = true;
         }
-
     }
 }

@@ -1,4 +1,5 @@
 package vadim.kor.gmail.com.moveobj;
+
 import android.annotation.SuppressLint;
 import android.graphics.Canvas;
 import android.util.Log;
@@ -9,6 +10,7 @@ public class UpdateThread extends Thread {
     private long time;
     private final int fps = 20;
     private boolean toRun = false;
+    private boolean isPaused = false;
     private MovementView movementView;
     private SurfaceHolder surfaceHolder;
     public Canvas canvas;
@@ -22,14 +24,18 @@ public class UpdateThread extends Thread {
         toRun = run;
     }
 
+    void setPause(boolean pause) {
+        isPaused = pause;
+    }
+
     @SuppressLint("WrongCall")
     @Override
     public void run() {
 
         long timeOfDelay = 300;
         long timeOfStart = System.currentTimeMillis();
-        while (true) {
-            if (toRun) {
+        while (toRun) {
+            if (!isPaused) {
                 long cTime = System.currentTimeMillis();
 
                 if ((cTime - time) <= (1000 / fps) && cTime > timeOfStart + timeOfDelay) {
