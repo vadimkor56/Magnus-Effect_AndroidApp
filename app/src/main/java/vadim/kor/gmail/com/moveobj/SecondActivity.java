@@ -13,13 +13,14 @@ import android.view.SurfaceHolder;
 import android.view.View;
 import android.widget.TextView;
 
+import java.sql.Time;
+import java.util.Calendar;
+import java.util.Date;
+
 public class SecondActivity extends AppCompatActivity implements View.OnClickListener {
     MovementView movementView;
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        return super.onCreateOptionsMenu(menu);
-    }
+    long startTime;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -33,6 +34,7 @@ public class SecondActivity extends AppCompatActivity implements View.OnClickLis
             actionBar.setHomeButtonEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+        startTime = System.nanoTime();
     }
 
     @Override
@@ -60,12 +62,14 @@ public class SecondActivity extends AppCompatActivity implements View.OnClickLis
         if (isRunning) {
             movementView.updateThread.setPause(true);
 
+            final double openDialogTime = System.nanoTime();
+
             double vXParam = movementView.getvX();
             double vYParam = movementView.getvY();
             double wParam = movementView.getW();
             double xParam = movementView.getXpos();
             double yParam = movementView.getYpos();
-            double timeParam = movementView.updateThread.getTime();
+            double timeParam = (System.nanoTime() - startTime)/1000000000d;
 
             String parameters = "Скорость по оси Ox:   " + String.valueOf(vXParam) + " м/с\nСкорость по оси Oy:   " +
                     String.valueOf(vYParam) + " м/с\nУгловая скорость:   " + String.valueOf(wParam) +
@@ -83,6 +87,8 @@ public class SecondActivity extends AppCompatActivity implements View.OnClickLis
                                     dialog.cancel();
                                     movementView.updateThread.setPause(false);
                                     isRunning = true;
+                                    startTime += System.nanoTime() - openDialogTime;
+
                                 }
                             });
             AlertDialog alert = builder.create();
